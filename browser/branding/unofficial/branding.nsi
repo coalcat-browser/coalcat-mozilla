@@ -8,9 +8,9 @@
 
 # BrandFullNameInternal is used for some registry and file system values
 # instead of BrandFullName and typically should not be modified.
-!define BrandFullNameInternal "Mozilla Developer Preview"
-!define CompanyName           "mozilla.org"
-!define URLInfoAbout          "https://www.mozilla.org"
+!define BrandFullNameInternal "Coalcat Build"
+!define CompanyName           "ChazizGRKB"
+!define URLInfoAbout          "https://qobo.tv/"
 !define HelpLink              "https://support.mozilla.org"
 
 !define URLStubDownload "http://download.mozilla.org/?os=win&lang=${AB_CD}&product=firefox-latest"
