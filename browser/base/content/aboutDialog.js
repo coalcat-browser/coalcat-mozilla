@@ -40,6 +40,9 @@ function init(aEvent)
     // Pref is unset
   }
 
+  var userAgentField = document.getElementById("userAgent");
+  userAgentField.value = navigator.userAgent;
+
   // Include the build ID and display warning if this is an "a#" (nightly or aurora) build
   let versionField = document.getElementById("version");
   let version = Services.appinfo.version;

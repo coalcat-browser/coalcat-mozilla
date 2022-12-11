@@ -1,68 +1,112 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
-
 #aboutDialog {
-  width: 620px;
-  /* Set an explicit line-height to avoid discrepancies in 'auto' spacing
-     across screens with different device DPI, which may cause font metrics
-     to round differently. */
-  line-height: 1.5;
+  padding-top: 0;
+  -moz-padding-end: 0;
+  padding-bottom: 10px;
+  -moz-padding-start: 0;
+  width: 299px;
 }
 
-#rightBox {
-  background-image: url("chrome://branding/content/about-wordmark.png");
+#modes {
+  min-height: 400px;
+}
+
+#clientBox {
+  background-image: url("chrome://branding/content/about.png");
   background-repeat: no-repeat;
-  /* padding-top creates room for the wordmark */
-  padding-top: 38px;
-  margin-top:20px;
+  background-color: #FFFFFF;
+  padding-top: 236px;
+  color: #000000;
 }
 
-#rightBox:-moz-locale-dir(rtl) {
-  background-position: 100% 0;
+#brandName {
+  font-weight: bold; font-size: larger;
+} 
+
+#userAgent {
+  direction: ltr;
+  margin-top: 10px;
+  margin-right: 13px;
+  margin-bottom: 0;
+  margin-left: 13px;
+  background-color: #FFFFFF;
+  color: #000000;
+  padding-top: 1px;
+  padding-right: 1px;
+  padding-bottom: 1px;
+  padding-left: 3px;
+  -moz-appearance: none;
+  overflow: hidden;
+  border: 0;
 }
 
-#bottomBox {
-  padding: 15px 10px 0;
+#groove {
+  margin-top: 0;
+}
+
+#creditsIframe {
+  cursor: default;
+  -moz-user-select: none;
+  border: 0;
 }
 
 #version {
   font-weight: bold;
-  margin-top: 10px;
-  margin-left: 0;
-  -moz-user-select: text;
-  -moz-user-focus: normal;
-  cursor: text;
-}
-
-#version:-moz-locale-dir(rtl) {
-  direction: ltr;
-  text-align: right;
-  margin-left: 5px;
+  color: #909090;
+  margin-top: 1em;
   margin-right: 0;
+  margin-bottom: 10px;
+  margin-left: 17px;
 }
 
-#releasenotes {
-  margin-top: 10px;
-}
-
-#distribution,
-#distributionId {
+#distribution {
+  font-weight: bold;
+  color: #909090;
   display: none;
   margin-top: 0;
+  margin-right: 0;
   margin-bottom: 0;
+  margin-left: 17px;
 }
 
-.text-blurb {
+#distributionId {
+  font-weight: bold;
+  color: #909090;
+  display: none;
+  margin-top: 0;
+  margin-right: 0;
   margin-bottom: 10px;
-  margin-inline-start: 0;
-  padding-inline-start: 0;
+  margin-left: 17px;
 }
 
-#updateButton,
+#copyright, #charlton {
+  margin-top: 0;
+  -moz-margin-end: 16px;
+  margin-bottom: 3px;
+  -moz-margin-start: 16px;
+}
+
+#charlton {
+  direction: ltr;
+  unicode-bidi: bidi-override;
+}
+
+button[dlgtype="extra2"] {
+  margin-left: 13px;
+}
+
+button[dlgtype="accept"] {
+  margin-right: 13px;
+}
+
+.text-link,
+.text-link:focus {
+  margin: 0px;
+  padding: 0px;
+  border: 0px;
+}
+
 #updateDeck > hbox > label {
-  margin-inline-start: 0;
-  padding-inline-start: 0;
+  margin-left: 13px;
 }
 
 .update-throbber {
@@ -76,22 +120,4 @@
   .update-throbber {
     list-style-image: url("chrome://global/skin/icons/loading@2x.png");
   }
-}
-
-description > .text-link,
-description > .text-link:focus {
-  margin: 0px;
-  padding: 0px;
-}
-
-.bottom-link,
-.bottom-link:focus {
-  text-align: center;
-  margin: 0 40px;
-}
-
-#currentChannel {
-  margin: 0;
-  padding: 0;
-  font-weight: bold;
 }
