@@ -232,7 +232,7 @@ a {
 }
 
 .console-string {
-  color: var(--theme-highlight-lightorange);
+  color: var(--theme-highlight-yellow);
 }
 
 .theme-selected .console-string,
@@ -496,7 +496,7 @@ a {
 }
 
 .webconsole-filter-button[category="security"] > .toolbarbutton-menubutton-button:before {
-  background-image: linear-gradient(#FF3030, #FF7D7D);
+  background-image: linear-gradient(#FF7D7D, #FF3030);
   border-color: #D12C2C;
 }
 

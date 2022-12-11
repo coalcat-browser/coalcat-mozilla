@@ -38,6 +38,7 @@
   --theme-highlight-blue: #0088cc;
   --theme-highlight-bluegrey: #0072ab;
   --theme-highlight-purple: #5b5fff;
+  --theme-highlight-yellow: #efc052;
   --theme-highlight-lightorange: #d97e00;
   --theme-highlight-orange: #f13c00;
   --theme-highlight-red: #ed2655;
@@ -75,32 +76,37 @@
 }
 
 :root.theme-dark {
-  --theme-body-background: #393f4c;
-  --theme-sidebar-background: #393f4c;
+  /* these colors are mostly photon since that looks better */
+
+  --theme-body-background: #2a2a2e;
+  --theme-sidebar-background: #1b1b1d;
   --theme-contrast-background: #ffb35b;
 
-  --theme-tab-toolbar-background: #272b35;
-  --theme-toolbar-background: #272b35;
-  --theme-selection-background: #5675B9;
-  --theme-selection-background-semitransparent: rgba(86, 117, 185, 0.5);
-  --theme-selection-color: #f5f7fa;
-  --theme-splitter-color: #454d5d;
-  --theme-comment: #757873;
+  --theme-tab-toolbar-background: #0c0c0d;
+  --theme-toolbar-background: #1b1b1d;
+  --theme-selection-background: #204E8A;
+  --theme-selection-background-semitransparent: rgba(32, 78, 138, 0.5);
+  --theme-selection-color: #ffffff;
+  --theme-splitter-color: #3c3c3d;
+  --theme-comment: #939395;
 
-  --theme-body-color: #8fa1b2;
-  --theme-body-color-alt: #b6babf;
-  --theme-body-color-inactive: #8fa1b2;
-  --theme-content-color1: #a9bacb;
-  --theme-content-color2: #8fa1b2;
-  --theme-content-color3: #5f7387;
+  --theme-body-color: #b1b1b3;
+  --theme-body-color-alt: #939395;
+  --theme-body-color-inactive: #737373;
+  --theme-content-color1: #d3d3d3;
+  --theme-content-color2: #b6b6b6;
+  --theme-content-color3: #838383;
 
-  --theme-highlight-green: #00ff7f;
-  --theme-highlight-blue: #46afe3;
+  --theme-highlight-green: #86DE74;
+  --theme-highlight-blue: #75BFFF;
+  --theme-highlight-purple: #B98EFF;
+  --theme-highlight-red: #FF7DE9;
+  --theme-highlight-yellow: #FFF89E;
+
+  /* These theme-highlight color variables have not been photonized. */
   --theme-highlight-bluegrey: #5e88b0;
-  --theme-highlight-purple: #bcb8db;
   --theme-highlight-lightorange: #d99b28;
   --theme-highlight-orange: #d96629;
-  --theme-highlight-red: #eb5368;
   --theme-highlight-pink: #df80ff;
   --theme-highlight-gray: #e9f4fe;
 
@@ -157,6 +163,7 @@
   --theme-highlight-blue: #3455db;
   --theme-highlight-bluegrey: #0072ab;
   --theme-highlight-purple: #887ce6;
+  --theme-highlight-yellow: #efc052;
   --theme-highlight-lightorange: #d97e00;
   --theme-highlight-orange: #f13c00;
   --theme-highlight-red: #e22f6f;
