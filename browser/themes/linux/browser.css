@@ -477,16 +477,6 @@ menuitem.bookmark-item {
   margin-bottom: 3px;
 }
 
-:-moz-any(#back-button) > .toolbarbutton-icon {
-  border-color: var(--urlbar-border-color) !important /* bug 561154 */;
-}
-
-:-moz-any(#back-button):not(:hover):not(:active):not([open=true]) > .toolbarbutton-icon,
-:-moz-any(#back-button)[disabled=true] > .toolbarbutton-icon {
-  background-color: rgba(255,255,255,.25) !important /* bug 561154 */;
-  background-clip: padding-box;
-}
-
 #back-button {
   padding-top: 2px;
   padding-bottom: 2px;
