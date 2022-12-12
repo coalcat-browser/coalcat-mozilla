@@ -8,7 +8,7 @@
 
 # BrandFullNameInternal is used for some registry and file system values
 # instead of BrandFullName and typically should not be modified.
-!define BrandFullNameInternal "Coalcat Build"
+!define BrandFullNameInternal "Coalcat Browser"
 !define CompanyName           "ChazizGRKB"
 !define URLInfoAbout          "https://qobo.tv/"
 !define HelpLink              "https://support.mozilla.org"
@@ -42,4 +42,4 @@
 !define INSTALL_PROGRESS_TEXT_COLOR_NORMAL 0xFFFFFF
 !define COMMON_TEXT_COLOR_NORMAL 0xFFFFFF
 !define COMMON_TEXT_COLOR_FADED 0xA1AAB3
-!define COMMON_BKGRD_COLOR 0x0F1B26
+!define COMMON_BKGRD_COLOR 0x202020
