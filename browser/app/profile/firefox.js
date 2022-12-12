@@ -1286,6 +1286,9 @@ pref("browser.uiCustomization.debug", false);
 // CustomizableUI state of the browser's user interface
 pref("browser.uiCustomization.state", "");
 
+// This might do something later on.
+pref("browser.photonish.enabled", true);
+
 // The remote content URL shown for FxA signup. Must use HTTPS.
 pref("identity.fxaccounts.remote.signup.uri", "https://accounts.firefox.com/signup?service=sync&context=fx_desktop_v3");
 
@@ -1524,7 +1527,7 @@ pref("browser.migrate.chrome.history.maxAgeInDays", 0);
 // Enable browser frames for use on desktop.  Only exposed to chrome callers.
 pref("dom.mozBrowserFramesEnabled", true);
 
-pref("extensions.pocket.enabled", true);
+pref("extensions.pocket.enabled", false);
 
 pref("signon.schemeUpgrades", true);
 

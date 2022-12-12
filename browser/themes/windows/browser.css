@@ -936,77 +936,7 @@ toolbar[brighttext] .toolbarbutton-1 > .toolbarbutton-menubutton-dropmarker {
 
 /* unified back/forward button */
 
-:-moz-any(#back-button, #forward-button) > .toolbarbutton-icon {
-  border-color: var(--urlbar-border-color-hover) !important;
-}
-
-:-moz-any(#back-button, #forward-button):not(:hover):not(:active):not([open=true]) > .toolbarbutton-icon,
-:-moz-any(#back-button, #forward-button)[disabled=true] > .toolbarbutton-icon {
-  background-color: rgba(255,255,255,.15) !important;
-}
-
-#forward-button {
-  -moz-box-align: stretch; /* let the button shape grow vertically with the location bar */
-  padding: 0 !important;
-}
-
-#forward-button > menupopup {
-  margin-top: 1px !important;
-}
-
-#forward-button > .toolbarbutton-icon {
-  border-left-style: none !important;
-  border-radius: 0 !important;
-  padding-left: calc(var(--backbutton-urlbar-overlap) + 3px) !important;
-  padding-right: 3px !important;
-  max-width: calc(var(--forwardbutton-width) + var(--backbutton-urlbar-overlap)) !important;
-}
-
-@conditionalForwardWithUrlbar@:not([switchingtabs]) > #forward-button {
-  transition: margin-left @forwardTransitionLength@ ease-out;
-}
-
-@conditionalForwardWithUrlbar@ > #forward-button[disabled] {
-  margin-left: calc(0px - var(--forwardbutton-width) - var(--backbutton-urlbar-overlap));
-}
-
-@conditionalForwardWithUrlbar@:hover:not([switchingtabs]) > #forward-button[disabled] {
-  /* delay the hiding of the forward button when hovered to avoid accidental clicks on the url bar */
-  transition-delay: 100s;
-}
-
-@conditionalForwardWithUrlbar@:not(:hover) > #forward-button[disabled] {
-  /* when not hovered anymore, trigger a new transition to hide the forward button immediately */
-  margin-left: calc(-0.01px - var(--forwardbutton-width) - var(--backbutton-urlbar-overlap));
-}
-
-#back-button {
-  padding-top: 3px !important;
-  padding-bottom: 3px !important;
-  padding-inline-start: 5px !important;
-  padding-inline-end: 0 !important;
-  position: relative !important;
-  z-index: 1 !important;
-  border-radius: 0 10000px 10000px 0 !important;
-}
-
-#back-button:-moz-locale-dir(rtl) {
-  border-radius: 10000px 0 0 10000px !important;
-}
-
-#back-button > menupopup {
-  margin-top: -1px !important;
-}
-
-#back-button > .toolbarbutton-icon {
-  border-radius: 10000px !important;
-  padding: 6px !important;
-  max-width: 32px !important; /* icon width + horizontal padding + border */
-}
-
-#back-button:-moz-locale-dir(rtl) > .toolbarbutton-icon {
-  transform: scaleX(-1);
-}
+/* grkb edit: remove classes for those buttons to be more like photon/proton -12/11/2022 */
 
 .unified-nav-back[_moz-menuactive]:-moz-locale-dir(ltr),
 .unified-nav-forward[_moz-menuactive]:-moz-locale-dir(rtl) {
@@ -1297,47 +1227,6 @@ toolbar[brighttext] #close-button {
 #urlbar:-moz-lwtheme[focused]:not([readonly]),
 .searchbar-textbox:-moz-lwtheme[focused] {
   background-color: white;
-}
-
-@conditionalForwardWithUrlbar@ > #urlbar {
-  border-inline-start: none;
-  padding-inline-start: 0;
-  margin-left: 0;
-}
-
-@conditionalForwardWithUrlbar@ > #urlbar:-moz-locale-dir(ltr) {
-  border-top-left-radius: 0;
-  border-bottom-left-radius: 0;
-}
-
-@conditionalForwardWithUrlbar@ > #urlbar:-moz-locale-dir(rtl) {
-  border-top-right-radius: 0;
-  border-bottom-right-radius: 0;
-}
-
-@conditionalForwardWithUrlbar@ {
-  clip-path: url("chrome://browser/content/browser.xul#urlbar-back-button-clip-path");
-  margin-inline-start: calc(-1 * var(--backbutton-urlbar-overlap));
-}
-
-@media (-moz-os-version: windows-win10) {
-  @conditionalForwardWithUrlbar@ {
-    clip-path: url("chrome://browser/content/browser.xul#urlbar-back-button-clip-path-win10");
-  }
-
-  :root {
-    --backbutton-urlbar-overlap: 9px;
-  }
-}
-
-@conditionalForwardWithUrlbar@:-moz-locale-dir(rtl),
-@conditionalForwardWithUrlbar@ > #urlbar:-moz-locale-dir(rtl) {
-  /* let urlbar-back-button-clip-path clip the urlbar's right side for RTL */
-  transform: scaleX(-1);
-}
-
-@conditionalForwardWithUrlbar@:-moz-locale-dir(rtl) {
-  -moz-box-direction: reverse;
 }
 
 html|*.urlbar-input:-moz-lwtheme::placeholder,

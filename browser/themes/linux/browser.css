@@ -477,12 +477,12 @@ menuitem.bookmark-item {
   margin-bottom: 3px;
 }
 
-:-moz-any(#back-button, #forward-button) > .toolbarbutton-icon {
+:-moz-any(#back-button) > .toolbarbutton-icon {
   border-color: var(--urlbar-border-color) !important /* bug 561154 */;
 }
 
-:-moz-any(#back-button, #forward-button):not(:hover):not(:active):not([open=true]) > .toolbarbutton-icon,
-:-moz-any(#back-button, #forward-button)[disabled=true] > .toolbarbutton-icon {
+:-moz-any(#back-button):not(:hover):not(:active):not([open=true]) > .toolbarbutton-icon,
+:-moz-any(#back-button)[disabled=true] > .toolbarbutton-icon {
   background-color: rgba(255,255,255,.25) !important /* bug 561154 */;
   background-clip: padding-box;
 }
@@ -513,37 +513,6 @@ menuitem.bookmark-item {
 
 #back-button:-moz-locale-dir(rtl) > .toolbarbutton-icon {
   transform: scaleX(-1);
-}
-
-#forward-button {
-  -moz-box-align: stretch; /* let the button shape grow vertically with the location bar */
-  padding: 0;
-}
-
-#forward-button > .toolbarbutton-icon {
-  padding-left: calc(var(--backbutton-urlbar-overlap) + 3px);
-  padding-right: 3px;
-  border-left-style: none;
-  border-radius: 0;
-  max-width: calc(var(--forwardbutton-width) + var(--backbutton-urlbar-overlap));
-}
-
-@conditionalForwardWithUrlbar@:not([switchingtabs]) > #forward-button {
-  transition: margin-left @forwardTransitionLength@ ease-out;
-}
-
-@conditionalForwardWithUrlbar@ > #forward-button[disabled] {
-  margin-left: calc(0px - var(--forwardbutton-width) - var(--backbutton-urlbar-overlap));
-}
-
-@conditionalForwardWithUrlbar@:hover:not([switchingtabs]) > #forward-button[disabled] {
-  /* delay the hiding of the forward button when hovered to avoid accidental clicks on the url bar */
-  transition-delay: 100s;
-}
-
-@conditionalForwardWithUrlbar@:not(:hover) > #forward-button[disabled] {
-  /* when not hovered anymore, trigger a new transition to hide the forward button immediately */
-  margin-left: calc(-0.01px - var(--forwardbutton-width) - var(--backbutton-urlbar-overlap));
 }
 
 /* undo close tab menu item */
@@ -664,36 +633,6 @@ menuitem.bookmark-item {
 
 #urlbar-container {
   -moz-box-align: center;
-}
-
-@conditionalForwardWithUrlbar@ > #urlbar {
-  border-inline-start: none;
-  margin-left: 0;
-}
-
-@conditionalForwardWithUrlbar@ > #urlbar:-moz-locale-dir(ltr) {
-  border-top-left-radius: 0;
-  border-bottom-left-radius: 0;
-}
-
-@conditionalForwardWithUrlbar@ > #urlbar:-moz-locale-dir(rtl) {
-  border-top-right-radius: 0;
-  border-bottom-right-radius: 0;
-}
-
-@conditionalForwardWithUrlbar@ {
-  clip-path: url("chrome://browser/content/browser.xul#urlbar-back-button-clip-path");
-  margin-inline-start: calc(-1 * var(--backbutton-urlbar-overlap));
-}
-
-@conditionalForwardWithUrlbar@:-moz-locale-dir(rtl),
-@conditionalForwardWithUrlbar@ > #urlbar:-moz-locale-dir(rtl) {
-  /* let urlbar-back-button-clip-path clip the urlbar's right side for RTL */
-  transform: scaleX(-1);
-}
-
-@conditionalForwardWithUrlbar@:-moz-locale-dir(rtl) {
-  -moz-box-direction: reverse;
 }
 
 #urlbar-icons {
