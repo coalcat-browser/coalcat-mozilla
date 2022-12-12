@@ -603,7 +603,7 @@ nsXPLookAndFeel::GetStandinForNativeColor(ColorID aID)
       result = NS_RGB(0x69, 0x69, 0x69); break;
     case eColorID__moz_field:        result = NS_RGB(0xFF, 0xFF, 0xFF); break;
     case eColorID__moz_fieldtext:    result = NS_RGB(0x00, 0x00, 0x00); break;
-    case eColorID__moz_dialog:       result = NS_RGB(0xF0, 0xF0, 0xF0); break;
+    case eColorID__moz_dialog:       result = NS_RGB(0xF9, 0xF9, 0xF9); break;
     case eColorID__moz_dialogtext:   result = NS_RGB(0x00, 0x00, 0x00); break;
     case eColorID__moz_dragtargetzone:
       result = NS_RGB(0xFF, 0xFF, 0xFF); break;
