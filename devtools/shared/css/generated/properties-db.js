@@ -191,11 +191,13 @@ exports.CSS_PROPERTIES = {
     "supports": [],
     "values": [
       "-moz-gtk-info-bar",
+      "-moz-mac-active-source-list-selection",
       "-moz-mac-disclosure-button-closed",
       "-moz-mac-disclosure-button-open",
       "-moz-mac-fullscreen-button",
       "-moz-mac-help-button",
       "-moz-mac-source-list",
+      "-moz-mac-source-list-selection",
       "-moz-mac-vibrancy-dark",
       "-moz-mac-vibrancy-light",
       "-moz-win-borderless-glass",
@@ -922,6 +924,18 @@ exports.CSS_PROPERTIES = {
       "-moz-calc",
       "auto",
       "calc",
+      "inherit",
+      "initial",
+      "unset"
+    ]
+  },
+  "-moz-context-properties": {
+    "isInherited": true,
+    "subproperties": [
+      "-moz-context-properties"
+    ],
+    "supports": [],
+    "values": [
       "inherit",
       "initial",
       "unset"
@@ -2204,213 +2218,6 @@ exports.CSS_PROPERTIES = {
       "unset"
     ]
   },
-  "-webkit-mask": {
-    "isInherited": false,
-    "subproperties": [
-      "mask-image",
-      "mask-repeat",
-      "mask-position-x",
-      "mask-position-y",
-      "mask-clip",
-      "mask-origin",
-      "mask-size",
-      "mask-composite",
-      "mask-mode"
-    ],
-    "supports": [
-      4,
-      5,
-      6,
-      8,
-      11
-    ],
-    "values": [
-      "-moz-element",
-      "-moz-image-rect",
-      "-moz-linear-gradient",
-      "-moz-radial-gradient",
-      "-moz-repeating-linear-gradient",
-      "-moz-repeating-radial-gradient",
-      "add",
-      "alpha",
-      "border-box",
-      "content-box",
-      "exclude",
-      "inherit",
-      "initial",
-      "intersect",
-      "linear-gradient",
-      "luminance",
-      "match-source",
-      "no-repeat",
-      "none",
-      "padding-box",
-      "radial-gradient",
-      "repeat",
-      "repeat-x",
-      "repeat-y",
-      "repeating-linear-gradient",
-      "repeating-radial-gradient",
-      "round",
-      "space",
-      "subtract",
-      "unset",
-      "url"
-    ]
-  },
-  "-webkit-mask-clip": {
-    "isInherited": false,
-    "subproperties": [
-      "mask-clip"
-    ],
-    "supports": [],
-    "values": [
-      "border-box",
-      "content-box",
-      "inherit",
-      "initial",
-      "padding-box",
-      "unset"
-    ]
-  },
-  "-webkit-mask-composite": {
-    "isInherited": false,
-    "subproperties": [
-      "mask-composite"
-    ],
-    "supports": [],
-    "values": [
-      "add",
-      "exclude",
-      "inherit",
-      "initial",
-      "intersect",
-      "subtract",
-      "unset"
-    ]
-  },
-  "-webkit-mask-image": {
-    "isInherited": false,
-    "subproperties": [
-      "mask-image"
-    ],
-    "supports": [
-      4,
-      5,
-      11
-    ],
-    "values": [
-      "-moz-element",
-      "-moz-image-rect",
-      "-moz-linear-gradient",
-      "-moz-radial-gradient",
-      "-moz-repeating-linear-gradient",
-      "-moz-repeating-radial-gradient",
-      "inherit",
-      "initial",
-      "linear-gradient",
-      "none",
-      "radial-gradient",
-      "repeating-linear-gradient",
-      "repeating-radial-gradient",
-      "unset",
-      "url"
-    ]
-  },
-  "-webkit-mask-origin": {
-    "isInherited": false,
-    "subproperties": [
-      "mask-origin"
-    ],
-    "supports": [],
-    "values": [
-      "border-box",
-      "content-box",
-      "inherit",
-      "initial",
-      "padding-box",
-      "unset"
-    ]
-  },
-  "-webkit-mask-position": {
-    "isInherited": false,
-    "subproperties": [
-      "mask-position-x",
-      "mask-position-y"
-    ],
-    "supports": [
-      6,
-      8
-    ],
-    "values": [
-      "inherit",
-      "initial",
-      "unset"
-    ]
-  },
-  "-webkit-mask-position-x": {
-    "isInherited": false,
-    "subproperties": [
-      "mask-position-x"
-    ],
-    "supports": [
-      6,
-      8
-    ],
-    "values": [
-      "inherit",
-      "initial",
-      "unset"
-    ]
-  },
-  "-webkit-mask-position-y": {
-    "isInherited": false,
-    "subproperties": [
-      "mask-position-y"
-    ],
-    "supports": [
-      6,
-      8
-    ],
-    "values": [
-      "inherit",
-      "initial",
-      "unset"
-    ]
-  },
-  "-webkit-mask-repeat": {
-    "isInherited": false,
-    "subproperties": [
-      "mask-repeat"
-    ],
-    "supports": [],
-    "values": [
-      "inherit",
-      "initial",
-      "no-repeat",
-      "repeat",
-      "repeat-x",
-      "repeat-y",
-      "round",
-      "space",
-      "unset"
-    ]
-  },
-  "-webkit-mask-size": {
-    "isInherited": false,
-    "subproperties": [
-      "mask-size"
-    ],
-    "supports": [
-      6,
-      8
-    ],
-    "values": [
-      "inherit",
-      "initial",
-      "unset"
-    ]
-  },
   "-webkit-order": {
     "isInherited": false,
     "subproperties": [
@@ -2889,6 +2696,7 @@ exports.CSS_PROPERTIES = {
       "column-width",
       "contain",
       "content",
+      "-moz-context-properties",
       "-moz-control-character-visibility",
       "counter-increment",
       "counter-reset",
@@ -2968,15 +2776,7 @@ exports.CSS_PROPERTIES = {
       "marker-end",
       "marker-mid",
       "marker-start",
-      "mask-clip",
-      "mask-composite",
-      "mask-image",
-      "mask-mode",
-      "mask-origin",
-      "mask-position-x",
-      "mask-position-y",
-      "mask-repeat",
-      "mask-size",
+      "mask",
       "mask-type",
       "max-block-size",
       "max-height",
@@ -3138,11 +2938,13 @@ exports.CSS_PROPERTIES = {
       "-moz-inline-stack",
       "-moz-left",
       "-moz-linear-gradient",
+      "-moz-mac-active-source-list-selection",
       "-moz-mac-disclosure-button-closed",
       "-moz-mac-disclosure-button-open",
       "-moz-mac-fullscreen-button",
       "-moz-mac-help-button",
       "-moz-mac-source-list",
+      "-moz-mac-source-list-selection",
       "-moz-mac-vibrancy-dark",
       "-moz-mac-vibrancy-light",
       "-moz-max-content",
@@ -3180,7 +2982,6 @@ exports.CSS_PROPERTIES = {
       "-webkit-inline-flex",
       "absolute",
       "active",
-      "add",
       "all",
       "all-petite-caps",
       "all-small-caps",
@@ -3256,13 +3057,11 @@ exports.CSS_PROPERTIES = {
       "end",
       "evenodd",
       "exact",
-      "exclude",
       "exclusion",
       "expanded",
       "extra-condensed",
       "extra-expanded",
       "fill",
-      "fill-box",
       "fixed",
       "flat",
       "flex",
@@ -3271,7 +3070,6 @@ exports.CSS_PROPERTIES = {
       "forwards",
       "full-width",
       "geometricprecision",
-      "grayscale",
       "grid",
       "groove",
       "groupbox",
@@ -3293,14 +3091,11 @@ exports.CSS_PROPERTIES = {
       "inline",
       "inline-axis",
       "inline-block",
-      "inline-end",
       "inline-flex",
       "inline-grid",
-      "inline-start",
       "inline-table",
       "inset",
       "inside",
-      "intersect",
       "isolate",
       "italic",
       "justify",
@@ -3326,7 +3121,6 @@ exports.CSS_PROPERTIES = {
       "manipulation",
       "manual",
       "margin-box",
-      "match-source",
       "mathematical",
       "medium",
       "menuarrow",
@@ -3484,7 +3278,6 @@ exports.CSS_PROPERTIES = {
       "stretch-to-fit",
       "stroke",
       "sub",
-      "subtract",
       "super",
       "tab",
       "tab-scroll-arrow-back",
@@ -3543,7 +3336,6 @@ exports.CSS_PROPERTIES = {
       "vertical",
       "vertical-lr",
       "vertical-rl",
-      "view-box",
       "visible",
       "visiblefill",
       "visiblepainted",
@@ -5302,11 +5094,8 @@ exports.CSS_PROPERTIES = {
     ],
     "supports": [],
     "values": [
-      "both",
       "inherit",
       "initial",
-      "inline-end",
-      "inline-start",
       "left",
       "none",
       "right",
@@ -5949,8 +5738,6 @@ exports.CSS_PROPERTIES = {
     "values": [
       "inherit",
       "initial",
-      "inline-end",
-      "inline-start",
       "left",
       "none",
       "right",
@@ -7171,223 +6958,17 @@ exports.CSS_PROPERTIES = {
   "mask": {
     "isInherited": false,
     "subproperties": [
-      "mask-image",
-      "mask-repeat",
-      "mask-position-x",
-      "mask-position-y",
-      "mask-clip",
-      "mask-origin",
-      "mask-size",
-      "mask-composite",
-      "mask-mode"
+      "mask"
     ],
     "supports": [
-      4,
-      5,
-      6,
-      8,
       11
     ],
     "values": [
-      "-moz-element",
-      "-moz-image-rect",
-      "-moz-linear-gradient",
-      "-moz-radial-gradient",
-      "-moz-repeating-linear-gradient",
-      "-moz-repeating-radial-gradient",
-      "add",
-      "alpha",
-      "border-box",
-      "content-box",
-      "exclude",
       "inherit",
       "initial",
-      "intersect",
-      "linear-gradient",
-      "luminance",
-      "match-source",
-      "no-repeat",
       "none",
-      "padding-box",
-      "radial-gradient",
-      "repeat",
-      "repeat-x",
-      "repeat-y",
-      "repeating-linear-gradient",
-      "repeating-radial-gradient",
-      "round",
-      "space",
-      "subtract",
       "unset",
       "url"
-    ]
-  },
-  "mask-clip": {
-    "isInherited": false,
-    "subproperties": [
-      "mask-clip"
-    ],
-    "supports": [],
-    "values": [
-      "border-box",
-      "content-box",
-      "inherit",
-      "initial",
-      "padding-box",
-      "unset"
-    ]
-  },
-  "mask-composite": {
-    "isInherited": false,
-    "subproperties": [
-      "mask-composite"
-    ],
-    "supports": [],
-    "values": [
-      "add",
-      "exclude",
-      "inherit",
-      "initial",
-      "intersect",
-      "subtract",
-      "unset"
-    ]
-  },
-  "mask-image": {
-    "isInherited": false,
-    "subproperties": [
-      "mask-image"
-    ],
-    "supports": [
-      4,
-      5,
-      11
-    ],
-    "values": [
-      "-moz-element",
-      "-moz-image-rect",
-      "-moz-linear-gradient",
-      "-moz-radial-gradient",
-      "-moz-repeating-linear-gradient",
-      "-moz-repeating-radial-gradient",
-      "inherit",
-      "initial",
-      "linear-gradient",
-      "none",
-      "radial-gradient",
-      "repeating-linear-gradient",
-      "repeating-radial-gradient",
-      "unset",
-      "url"
-    ]
-  },
-  "mask-mode": {
-    "isInherited": false,
-    "subproperties": [
-      "mask-mode"
-    ],
-    "supports": [],
-    "values": [
-      "alpha",
-      "inherit",
-      "initial",
-      "luminance",
-      "match-source",
-      "unset"
-    ]
-  },
-  "mask-origin": {
-    "isInherited": false,
-    "subproperties": [
-      "mask-origin"
-    ],
-    "supports": [],
-    "values": [
-      "border-box",
-      "content-box",
-      "inherit",
-      "initial",
-      "padding-box",
-      "unset"
-    ]
-  },
-  "mask-position": {
-    "isInherited": false,
-    "subproperties": [
-      "mask-position-x",
-      "mask-position-y"
-    ],
-    "supports": [
-      6,
-      8
-    ],
-    "values": [
-      "inherit",
-      "initial",
-      "unset"
-    ]
-  },
-  "mask-position-x": {
-    "isInherited": false,
-    "subproperties": [
-      "mask-position-x"
-    ],
-    "supports": [
-      6,
-      8
-    ],
-    "values": [
-      "inherit",
-      "initial",
-      "unset"
-    ]
-  },
-  "mask-position-y": {
-    "isInherited": false,
-    "subproperties": [
-      "mask-position-y"
-    ],
-    "supports": [
-      6,
-      8
-    ],
-    "values": [
-      "inherit",
-      "initial",
-      "unset"
-    ]
-  },
-  "mask-repeat": {
-    "isInherited": false,
-    "subproperties": [
-      "mask-repeat"
-    ],
-    "supports": [],
-    "values": [
-      "inherit",
-      "initial",
-      "no-repeat",
-      "repeat",
-      "repeat-x",
-      "repeat-y",
-      "round",
-      "space",
-      "unset"
-    ]
-  },
-  "mask-size": {
-    "isInherited": false,
-    "subproperties": [
-      "mask-size"
-    ],
-    "supports": [
-      6,
-      8
-    ],
-    "values": [
-      "inherit",
-      "initial",
-      "unset"
     ]
   },
   "mask-type": {
@@ -9009,21 +8590,6 @@ exports.CSS_PROPERTIES = {
       "inherit",
       "initial",
       "unset"
-    ]
-  },
-  "transform-box": {
-    "isInherited": false,
-    "subproperties": [
-      "transform-box"
-    ],
-    "supports": [],
-    "values": [
-      "border-box",
-      "fill-box",
-      "inherit",
-      "initial",
-      "unset",
-      "view-box"
     ]
   },
   "transform-origin": {

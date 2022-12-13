@@ -17,28 +17,28 @@ native MallocSizeOf(mozilla::MallocSizeOf);
  * could be dangerous since double-wrapping could lead to loss of
  * pointer identity.
  */
- 
+
 [scriptable, builtinclass, uuid(8b8c11d4-3ed5-4079-8974-73c7576cdb34)]
 interface nsIAtom : nsISupports
 {
-  /**
-   * Get the Unicode or UTF8 value for the string
-   */
-  [binaryname(ScriptableToString)] AString toString(); 
-  [noscript] AUTF8String toUTF8String();
-  
-  /**
-   * Compare the atom to a specific string value
-   * Note that this will NEVER return/throw an error condition.
-   */
-  [binaryname(ScriptableEquals)] boolean equals(in AString aString);
+/**
+ * Get the Unicode or UTF8 value for the string
+ */
+[binaryname(ScriptableToString)] AString toString();
+[noscript] AUTF8String toUTF8String();
 
-  [noscript, notxpcom]
-  size_t SizeOfIncludingThis(in MallocSizeOf aMallocSizeOf);
+/**
+ * Compare the atom to a specific string value
+ * Note that this will NEVER return/throw an error condition.
+ */
+[binaryname(ScriptableEquals)] boolean equals(in AString aString);
+
+[noscript, notxpcom]
+size_t SizeOfIncludingThis(in MallocSizeOf aMallocSizeOf);
 
 %{C++
-  // note this is NOT virtual so this won't muck with the vtable!
-  inline bool Equals(const nsAString& aString) const {
+    // note this is NOT virtual so this won't muck with the vtable!
+    inline bool Equals(const nsAString& aString) const {
     return aString.Equals(nsDependentString(mString, mLength));
   }
 
@@ -54,7 +54,7 @@ interface nsIAtom : nsISupports
     return mLength;
   }
 
-  inline void ToString(nsAString& aBuf) {
+  inline void ToString(nsAString& aBuf) const {
     // See the comment on |mString|'s declaration.
     nsStringBuffer::FromData(mString)->ToString(mLength, aBuf);
   }
@@ -83,29 +83,29 @@ protected:
    * nsStringBuffer::FromData() calls above are valid.
    */
   char16_t* mString;
-%}
+  %}
 };
 
 
 %{C++
-/*
- * The four forms of NS_Atomize (for use with |nsCOMPtr<nsIAtom>|) return the
- * atom for the string given. At any given time there will always be one atom
- * representing a given string. Atoms are intended to make string comparison
- * cheaper by simplifying it to pointer equality. A pointer to the atom that
- * does not own a reference is not guaranteed to be valid.
- */
+  /*
+   * The four forms of NS_Atomize (for use with |nsCOMPtr<nsIAtom>|) return the
+   * atom for the string given. At any given time there will always be one atom
+   * representing a given string. Atoms are intended to make string comparison
+   * cheaper by simplifying it to pointer equality. A pointer to the atom that
+   * does not own a reference is not guaranteed to be valid.
+   */
 
 
-/**
- * Find an atom that matches the given UTF-8 string.
- * The string is assumed to be zero terminated.  Never returns null.
- */
-extern already_AddRefed<nsIAtom> NS_Atomize(const char* aUTF8String);
+  /**
+   * Find an atom that matches the given UTF-8 string.
+   * The string is assumed to be zero terminated.  Never returns null.
+   */
+  extern already_AddRefed<nsIAtom> NS_Atomize(const char* aUTF8String);
 
-/**
- * Find an atom that matches the given UTF-8 string.  Never returns null.
- */
+ /**
+  * Find an atom that matches the given UTF-8 string.  Never returns null.
+  */
 extern already_AddRefed<nsIAtom> NS_Atomize(const nsACString& aUTF8String);
 
 /**
@@ -126,7 +126,7 @@ extern already_AddRefed<nsIAtom> NS_Atomize(const nsAString& aUTF16String);
 extern nsrefcnt NS_GetNumberOfAtoms(void);
 
 /**
- * Return a pointer for a static atom for the string or null if there's 
+ * Return a pointer for a static atom for the string or null if there's
  * no static atom for this string.
  */
 extern nsIAtom* NS_GetStaticAtom(const nsAString& aUTF16String);
@@ -139,7 +139,7 @@ extern void NS_SealStaticAtomTable();
 class nsAtomString : public nsString
 {
 public:
-  explicit nsAtomString(nsIAtom* aAtom)
+  explicit nsAtomString(const nsIAtom* aAtom)
   {
     aAtom->ToString(*this);
   }
@@ -157,7 +157,7 @@ public:
 class nsDependentAtomString : public nsDependentString
 {
 public:
-  explicit nsDependentAtomString(nsIAtom* aAtom)
+  explicit nsDependentAtomString(const nsIAtom* aAtom)
     : nsDependentString(aAtom->GetUTF16String(), aAtom->GetLength())
   {
   }

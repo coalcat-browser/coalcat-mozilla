@@ -947,6 +947,7 @@ protected:
                                          uint32_t& aVariantMask,
                                          bool *aHadFinalWS);
   bool ParseCalcTerm(nsCSSValue& aValue, uint32_t& aVariantMask);
+  bool ParseContextProperties();
   bool RequireWhitespace();
 
   // For "flex" shorthand property, defined in CSS Flexbox spec
@@ -8260,6 +8261,51 @@ CSSParserImpl::ParseCounter(nsCSSValue& aValue)
 
   SkipUntil(')');
   return false;
+}
+
+bool
+CSSParserImpl::ParseContextProperties()
+{
+  nsCSSValue listValue;
+  nsCSSValueList* currentListValue = listValue.SetListValue();
+  bool first = true;
+  for (;;) {
+    const uint32_t variantMask = VARIANT_IDENTIFIER |
+                                 VARIANT_INHERIT |
+                                 VARIANT_NONE;
+    nsCSSValue value;
+    if (!ParseSingleTokenVariant(value, variantMask, nullptr)) {
+      return false;
+    }
+
+    if (value.GetUnit() != eCSSUnit_Ident) {
+      if (first) {
+        AppendValue(eCSSProperty__moz_context_properties, value);
+        return true;
+      } else {
+        return false;
+      }
+    }
+
+    nsString str;
+    value.GetStringValue(str);
+    if (str.LowerCaseEqualsLiteral("default") ||
+        str.LowerCaseEqualsLiteral("will-change")) {
+      return false;
+    }
+
+    currentListValue->mValue = value;
+
+    if (!ExpectSymbol(',', true)) {
+      break;
+    }
+    currentListValue->mNext = new nsCSSValueList;
+    currentListValue = currentListValue->mNext;
+    first = false;
+  }
+
+  AppendValue(eCSSProperty__moz_context_properties, listValue);
+  return true;
 }
 
 bool

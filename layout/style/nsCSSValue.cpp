@@ -224,6 +224,10 @@ nsCSSValue::nsCSSValue(const nsCSSValue& aCopy)
     mValue.mFontFamilyList = aCopy.mValue.mFontFamilyList;
     mValue.mFontFamilyList->AddRef();
   }
+  else if (eCSSUnit_AtomIdent == mUnit) {
+    mValue.mAtom = aCopy.mValue.mAtom;
+    mValue.mAtom->AddRef();
+  }
   else {
     MOZ_ASSERT(false, "unknown unit");
   }
@@ -318,6 +322,9 @@ bool nsCSSValue::operator==(const nsCSSValue& aOther) const
     }
     else if (eCSSUnit_FontFamilyList == mUnit) {
       return *mValue.mFontFamilyList == *aOther.mValue.mFontFamilyList;
+    }
+    else if (eCSSUnit_AtomIdent == mUnit) {
+      return mValue.mAtom == aOther.mValue.mAtom;
     }
     else {
       return mValue.mFloat == aOther.mValue.mFloat;
@@ -441,6 +448,8 @@ void nsCSSValue::DoReset()
     mValue.mGridTemplateAreas->Release();
   } else if (eCSSUnit_FontFamilyList == mUnit) {
     mValue.mFontFamilyList->Release();
+  } else if (eCSSUnit_AtomIdent == mUnit) {
+    mValue.mAtom->Release();
   }
   mUnit = eCSSUnit_Null;
 }
@@ -919,6 +928,17 @@ nsCSSValue::BufferFromString(const nsString& aValue)
   // Null-terminate.
   data[length] = 0;
   return buffer.forget();
+}
+
+
+void
+nsCSSValue::AtomizeIdentValue()
+{
+  MOZ_ASSERT(mUnit == eCSSUnit_Ident);
+  nsCOMPtr<nsIAtom> atom = NS_Atomize(GetStringBufferValue());
+  Reset();
+  mUnit = eCSSUnit_AtomIdent;
+  mValue.mAtom = atom.forget().take();
 }
 
 namespace {
@@ -1922,6 +1942,9 @@ nsCSSValue::AppendToString(nsCSSPropertyID aProperty, nsAString& aResult,
   } else if (eCSSUnit_FontFamilyList == unit) {
     nsStyleUtil::AppendEscapedCSSFontFamilyList(*mValue.mFontFamilyList,
                                                 aResult);
+  } else if (eCSSUnit_AtomIdent == unit) {
+    nsDependentAtomString buffer(GetAtomValue());
+    nsStyleUtil::AppendEscapedCSSIdent(buffer, aResult);
   }
 
   switch (unit) {
@@ -1942,6 +1965,7 @@ nsCSSValue::AppendToString(nsCSSPropertyID aProperty, nsAString& aResult,
     case eCSSUnit_FontFamilyList: break;
     case eCSSUnit_String:       break;
     case eCSSUnit_Ident:        break;
+    case eCSSUnit_AtomIdent:    break;
     case eCSSUnit_URL:          break;
     case eCSSUnit_Image:        break;
     case eCSSUnit_Element:      break;
@@ -2137,6 +2161,10 @@ nsCSSValue::SizeOfExcludingThis(mozilla::MallocSizeOf aMallocSizeOf) const
 
     case eCSSUnit_FontFamilyList:
       n += mValue.mFontFamilyList->SizeOfIncludingThis(aMallocSizeOf);
+      break;
+
+    // Atom is always shared, and thus should not be counted.
+    case eCSSUnit_AtomIdent:
       break;
 
     // Int: nothing extra to measure.
