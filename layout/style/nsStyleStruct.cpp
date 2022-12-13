@@ -1027,8 +1027,15 @@ nsStyleSVG::CalcDifference(const nsStyleSVG& aNewData) const
        mPaintOrder            != aNewData.mPaintOrder            ||
        mShapeRendering        != aNewData.mShapeRendering        ||
        mStrokeDasharray       != aNewData.mStrokeDasharray       ||
-       mContextFlags          != aNewData.mContextFlags) {
+       mContextFlags          != aNewData.mContextFlags          ||
+       mContextPropsBits      != aNewData.mContextPropsBits) {
     return hint | nsChangeHint_RepaintFrame;
+  }
+
+  if (!hint) {
+    if (mContextProps != aNewData.mContextProps) {
+      hint = nsChangeHint_NeutralChange;
+    }
   }
 
   return hint;
