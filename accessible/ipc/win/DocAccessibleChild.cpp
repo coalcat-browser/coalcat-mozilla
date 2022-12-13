@@ -234,4 +234,3 @@ DocAccessibleChild::SendBindChildDoc(DocAccessibleChild* aChildDoc,
 
 } // namespace a11y
 } // namespace mozilla
-

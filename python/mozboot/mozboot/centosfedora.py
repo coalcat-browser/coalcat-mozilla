@@ -13,7 +13,7 @@ class CentOSFedoraBootstrapper(BaseBootstrapper):
         BaseBootstrapper.__init__(self, **kwargs)
 
         self.distro = distro
-        self.version = version
+        self.version = int(version.split('.')[0])
         self.dist_id = dist_id
 
         self.group_packages = []
@@ -46,8 +46,6 @@ class CentOSFedoraBootstrapper(BaseBootstrapper):
         if self.distro in ('CentOS', 'CentOS Linux'):
             self.group_packages += [
                 'Development Tools',
-                'Development Libraries',
-                'GNOME Software Development',
             ]
 
             self.packages += [
@@ -56,8 +54,24 @@ class CentOSFedoraBootstrapper(BaseBootstrapper):
 
             self.browser_packages += [
                 'dbus-glib-devel',
+                'gcc-c++',
                 'gtk3-devel',
             ]
+
+            if self.version == 6:
+                self.group_packages += [
+                    'Development Libraries',
+                    'GNOME Software Development',
+                ]
+
+            elif self.version == 7:
+                self.packages += [
+                    'python2-devel',
+                ]
+
+                self.browser_group_packages = [
+                    'Development Tools',
+                ]
 
         elif self.distro == 'Fedora':
             self.group_packages += [
@@ -106,7 +120,7 @@ class CentOSFedoraBootstrapper(BaseBootstrapper):
         self.dnf_groupinstall(*self.browser_group_packages)
         self.dnf_install(*self.browser_packages)
 
-        if self.distro in ('CentOS', 'CentOS Linux'):
+        if self.distro in ('CentOS', 'CentOS Linux')  and self.version == 6:
             yasm = 'http://pkgs.repoforge.org/yasm/yasm-1.1.0-1.el6.rf.i686.rpm'
             if platform.architecture()[0] == '64bit':
                 yasm = 'http://pkgs.repoforge.org/yasm/yasm-1.1.0-1.el6.rf.x86_64.rpm'

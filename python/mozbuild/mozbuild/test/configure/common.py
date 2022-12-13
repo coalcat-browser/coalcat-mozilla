@@ -89,6 +89,7 @@ class ConfigureTestSandbox(ConfigureSandbox):
             self._subprocess_paths[environ['CONFIG_SHELL']] = self.shell
             paths.append(environ['CONFIG_SHELL'])
         self._environ = copy.copy(environ)
+        self._subprocess_paths[mozpath.join(topsrcdir, 'build/win32/vswhere.exe')] = self.vswhere
 
         vfs = ConfigureTestVFS(paths)
 
@@ -175,7 +176,7 @@ class ConfigureTestSandbox(ConfigureSandbox):
         path_out.value = fake_short_path(path_in)
         return length
 
-    def which(self, command, path=None):
+    def which(self, command, path=None, exts=None):
         for parent in (path or self._search_path):
             c = mozpath.abspath(mozpath.join(parent, command))
             for candidate in (c, ensure_exe_extension(c)):
@@ -214,6 +215,9 @@ class ConfigureTestSandbox(ConfigureSandbox):
         if script in self._subprocess_paths:
             return self._subprocess_paths[script](stdin, args[1:])
         return 127, '', 'File not found'
+
+    def vswhere(self, stdin, args):
+        return 0, '[]', ''
 
 
 class BaseConfigureTest(unittest.TestCase):

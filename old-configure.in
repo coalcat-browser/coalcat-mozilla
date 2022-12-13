@@ -80,14 +80,6 @@ dnl ========================================================
 MOZ_USE_PTHREADS=
 _PTHREAD_LDFLAGS=""
 
-dnl Do not allow objdir == srcdir builds.
-dnl ==============================================================
-_topsrcdir=`cd \`dirname $0\`; pwd -W 2>/dev/null || pwd -P`
-_objdir=`pwd -P`
-
-MOZ_BUILD_ROOT=`pwd -W 2>/dev/null || pwd -P`
-DIST="$MOZ_BUILD_ROOT/dist"
-
 MOZ_DEFAULT_COMPILER
 
 if test "$COMPILE_ENVIRONMENT"; then
@@ -187,7 +179,6 @@ else
     AC_PROG_RANLIB
     MOZ_PATH_PROGS(AS, $AS as, $CC)
     AC_CHECK_PROGS(AR, ar, :)
-    AC_CHECK_PROGS(LD, ld, :)
     AC_CHECK_PROGS(STRIP, strip, :)
     AC_CHECK_PROGS(WINDRES, windres, :)
     AC_CHECK_PROGS(OTOOL, otool, :)
@@ -246,50 +237,57 @@ case "$target" in
         AC_DEFINE(_CRT_NONSTDC_NO_WARNINGS)
         AC_DEFINE(_USE_MATH_DEFINES) # Otherwise MSVC's math.h doesn't #define M_PI.
 
-        case "$CC_VERSION" in
-        19*)
-            _CC_SUITE=14
-            MSVS_VERSION=2015
-            MSVC_C_RUNTIME_DLL=vcruntime140.dll
-            MSVC_CXX_RUNTIME_DLL=msvcp140.dll
+        _CC_SUITE=14
+        MSVS_VERSION=2015
+        MSVC_C_RUNTIME_DLL=vcruntime140.dll
+        MSVC_CXX_RUNTIME_DLL=msvcp140.dll
 
-            MOZ_CHECK_HEADER(dia2.h, MSVC_HAS_DIA_SDK=1)
-            if test -n "$MSVC_HAS_DIA_SDK"; then
-                AC_DEFINE(MSVC_HAS_DIA_SDK)
-            fi
+        MOZ_CHECK_HEADER(dia2.h, MSVC_HAS_DIA_SDK=1)
+        if test -n "$MSVC_HAS_DIA_SDK"; then
+            AC_DEFINE(MSVC_HAS_DIA_SDK)
+        fi
 
-            # C5026: move constructor was implicitly defined as deleted
-            CXXFLAGS="$CXXFLAGS -wd5026"
+        if test "$_MSC_VER" -ge "1910"; then # VS2017+
+            # C5038: Enable initializer list order warnings
+            # The -w1#### flag treats warning C#### as if it was a warning level
+            # 1 warning, and thus enables it because we enable /W3 warnings. We
+            # don't use -we#### because it would enable warning C#### but treat
+            # it as an error, even in third-party code.
+            # https://docs.microsoft.com/en-us/cpp/build/reference/compiler-option-warning-level
+            CXXFLAGS="$CXXFLAGS -w15038"
+        fi
 
-            # C5027: move assignment operator was implicitly defined as deleted
-            CXXFLAGS="$CXXFLAGS -wd5027"
+        # C5026: move constructor was implicitly defined as deleted
+        CXXFLAGS="$CXXFLAGS -wd5026"
 
-            # -Zc:sizedDealloc- disables C++14 global sized deallocation (see bug 1160146)
-            CXXFLAGS="$CXXFLAGS -Zc:sizedDealloc-"
+        # C5027: move assignment operator was implicitly defined as deleted
+        CXXFLAGS="$CXXFLAGS -wd5027"
 
-            # Disable C++11 thread-safe statics due to crashes on XP (bug 1204752)
-            # See https://connect.microsoft.com/VisualStudio/feedback/details/1789709/visual-c-2015-runtime-broken-on-windows-server-2003-c-11-magic-statics
-            CXXFLAGS="$CXXFLAGS -Zc:threadSafeInit-"
+        # -Zc:sizedDealloc- disables C++14 global sized deallocation (see bug 1160146)
+        CXXFLAGS="$CXXFLAGS -Zc:sizedDealloc-"
 
-            # https://connect.microsoft.com/VisualStudio/feedback/details/888527/warnings-on-dbghelp-h
-            # for dbghelp.h, imagehlp.h, and shobj.h
-            # C4091: 'typedef ': ignored on left of '' when no variable is declared
-            CFLAGS="$CFLAGS -wd4091"
-            CXXFLAGS="$CXXFLAGS -wd4091"
+        # Disable C++11 thread-safe statics due to crashes on XP (bug 1204752)
+        # See https://connect.microsoft.com/VisualStudio/feedback/details/1789709/visual-c-2015-runtime-broken-on-windows-server-2003-c-11-magic-statics
+        CXXFLAGS="$CXXFLAGS -Zc:threadSafeInit-"
 
-            # This is intended as a temporary hack to support building with VS2015.
-            # 'noexcept' used with no exception handling mode specified;
-            # termination on exception is not guaranteed. Specify /EHsc
-            CXXFLAGS="$CXXFLAGS -wd4577"
+        # https://connect.microsoft.com/VisualStudio/feedback/details/888527/warnings-on-dbghelp-h
+        # for dbghelp.h, imagehlp.h, and shobj.h
+        # C4091: 'typedef ': ignored on left of '' when no variable is declared
+        CFLAGS="$CFLAGS -wd4091"
+        CXXFLAGS="$CXXFLAGS -wd4091"
 
-            if test -n "$WIN_UCRT_REDIST_DIR"; then
-              if test ! -d "$WIN_UCRT_REDIST_DIR"; then
-                AC_MSG_ERROR([Invalid Windows UCRT Redist directory: ${WIN_UCRT_REDIST_DIR}])
-              fi
-              WIN_UCRT_REDIST_DIR=`cd "$WIN_UCRT_REDIST_DIR" && pwd -W`
-            fi
-            ;;
-        esac
+        # This is intended as a temporary hack to support building with VS2015.
+        # 'noexcept' used with no exception handling mode specified;
+        # termination on exception is not guaranteed. Specify /EHsc
+        CXXFLAGS="$CXXFLAGS -wd4577"
+
+        if test -n "$WIN_UCRT_REDIST_DIR"; then
+          if test ! -d "$WIN_UCRT_REDIST_DIR"; then
+            AC_MSG_ERROR([Invalid Windows UCRT Redist directory: ${WIN_UCRT_REDIST_DIR}])
+          fi
+          WIN_UCRT_REDIST_DIR=`cd "$WIN_UCRT_REDIST_DIR" && pwd -W`
+        fi
+
         AC_SUBST(MSVS_VERSION)
         AC_SUBST(MSVC_HAS_DIA_SDK)
         AC_SUBST(MSVC_C_RUNTIME_DLL)
@@ -305,7 +303,7 @@ case "$target" in
         fi
 
         # Check linker version
-        _LD_FULL_VERSION=`"${LD}" -v 2>&1 | sed -nre "$_MSVC_VER_FILTER"`
+        _LD_FULL_VERSION=`"${LINK}" -v 2>&1 | sed -nre "$_MSVC_VER_FILTER"`
         _LD_MAJOR_VERSION=`echo ${_LD_FULL_VERSION} | $AWK -F\. '{ print $1 }'`
         if test "$_LD_MAJOR_VERSION" != "$_CC_SUITE"; then
             AC_MSG_ERROR([The linker major version, $_LD_FULL_VERSION,  does not match the compiler suite version, $_CC_SUITE.])
@@ -325,35 +323,8 @@ case "$target" in
 
         unset _MSVC_VER_FILTER
 
-        AC_CACHE_CHECK(for overridable _RAISE,
-                       ac_cv_have__RAISE,
-            [
-                AC_LANG_SAVE
-                AC_LANG_CPLUSPLUS
-                _SAVE_CXXFLAGS="$CXXFLAGS"
-                CXXFLAGS="${CXXFLAGS} -D_HAS_EXCEPTIONS=0"
-                AC_TRY_COMPILE([#include <xstddef>
-                                #undef _RAISE
-                                #define _RAISE(x) externallyDefinedFunction((x).what())
-                                #include <vector>
-                               ],
-                               [std::vector<int> v; return v.at(1);],
-                               ac_cv_have__RAISE="no",
-                               ac_cv_have__RAISE="yes")
-                CXXFLAGS="$_SAVE_CXXFLAGS"
-                AC_LANG_RESTORE
-            ])
-        if test "$ac_cv_have__RAISE" = "yes"; then
-            WRAP_STL_INCLUDES=1
-            MOZ_MSVC_STL_WRAP_RAISE=1
-            AC_DEFINE(MOZ_MSVC_STL_WRAP_RAISE)
-        else
-            AC_MSG_ERROR([Gecko exception wrapping doesn't understand your your MSVC/SDK.  Please file a bug describing this error and your build configuration.])
-        fi
-
-        if test "$WRAP_STL_INCLUDES" = "1"; then
-            STL_FLAGS="-I${DIST}/stl_wrappers"
-        fi
+        WRAP_STL_INCLUDES=1
+        STL_FLAGS="-I${DIST}/stl_wrappers"
         CFLAGS="$CFLAGS -D_HAS_EXCEPTIONS=0"
         CXXFLAGS="$CXXFLAGS -D_HAS_EXCEPTIONS=0"
     else
@@ -434,7 +405,6 @@ AC_SUBST(MIDL_FLAGS)
 AC_SUBST(_MSC_VER)
 
 AC_SUBST(GNU_AS)
-AC_SUBST(GNU_LD)
 AC_SUBST(GNU_CC)
 AC_SUBST(GNU_CXX)
 
@@ -719,20 +689,6 @@ if test "$GNU_CC"; then
     _USE_CPP_INCLUDE_FLAG=1
 
     ASFLAGS="$ASFLAGS $_DEFINES_CFLAGS"
-
-else
-    MKSHLIB='$(LD) $(DSO_LDOPTS) -h $(DSO_SONAME) -o $@'
-    MKCSHLIB='$(LD) $(DSO_LDOPTS) -h $(DSO_SONAME) -o $@'
-
-    DSO_LDOPTS='-shared'
-    if test "$GNU_LD"; then
-        # Don't allow undefined symbols in libraries
-        DSO_LDOPTS="$DSO_LDOPTS -z defs"
-    fi
-
-    DSO_CFLAGS=''
-    DSO_PIC_CFLAGS='-KPIC'
-    _DEFINES_CFLAGS='$(ACDEFINES) -D_MOZILLA_CONFIG_H_ -DMOZILLA_CLIENT'
 fi
 
 if test "$GNU_CXX"; then
@@ -741,9 +697,6 @@ if test "$GNU_CXX"; then
 
     _DEFINES_CXXFLAGS='-DMOZILLA_CLIENT -include $(topobjdir)/mozilla-config.h'
     _USE_CPP_INCLUDE_FLAG=1
-
-else
-    _DEFINES_CXXFLAGS='-DMOZILLA_CLIENT -D_MOZILLA_CONFIG_H_ $(ACDEFINES)'
 fi
 
 dnl ========================================================
@@ -1005,7 +958,6 @@ case "$target" in
         MOZ_FOLD_LIBS_FLAGS=-mnop-fun-dllimport
     else
         TARGET_COMPILER_ABI=msvc
-        HOST_LD='$(LD)'
         if test "$AS_BIN"; then
             AS="$(basename "$AS_BIN")"
         fi
@@ -1020,8 +972,8 @@ case "$target" in
         DLL_PREFIX=
         LIB_PREFIX=
         IMPORT_LIB_SUFFIX=lib
-        MKSHLIB='$(LD) -NOLOGO -DLL -OUT:$@ -PDB:$(LINK_PDBFILE) $(DSO_LDOPTS)'
-        MKCSHLIB='$(LD) -NOLOGO -DLL -OUT:$@ -PDB:$(LINK_PDBFILE) $(DSO_LDOPTS)'
+        MKSHLIB='$(LINK) -NOLOGO -DLL -OUT:$@ -PDB:$(LINK_PDBFILE) $(DSO_LDOPTS)'
+        MKCSHLIB='$(LINK) -NOLOGO -DLL -OUT:$@ -PDB:$(LINK_PDBFILE) $(DSO_LDOPTS)'
         dnl Set subsystem version 5 for Windows XP.
         if test "$CPU_ARCH" = "x86"; then
             WIN32_SUBSYSTEM_VERSION=5.01
@@ -1159,6 +1111,8 @@ case "$target" in
         # make 'foo == bar;' error out
         CFLAGS="$CFLAGS -we4553"
         CXXFLAGS="$CXXFLAGS -we4553"
+        # Silence VS2017 15.5+ TR1 deprecation warnings hit by older gtest versions
+        CXXFLAGS="$CXXFLAGS -D_SILENCE_TR1_NAMESPACE_DEPRECATION_WARNING"
         LIBS="$LIBS kernel32.lib user32.lib gdi32.lib winmm.lib wsock32.lib advapi32.lib secur32.lib"
         MOZ_DEBUG_LDFLAGS='-DEBUG -DEBUGTYPE:CV'
         WARNINGS_AS_ERRORS='-WX'
@@ -2130,6 +2084,15 @@ if test -n "$MOZ_SYSTEM_NSS"; then
    NSS_LIBS="$NSS_LIBS -lcrmf"
 else
    NSS_CFLAGS="-I${DIST}/include/nss"
+   case "${OS_ARCH}" in
+        # This is to match the conditions in security/generate_mapfile.py,
+        # plus Windows which doesn't run that script.
+        WINNT|Darwin|Linux)
+            ;;
+        *)
+            AC_MSG_ERROR([building in-tree NSS is not supported on this platform. Use --with-system-nss])
+            ;;
+   esac
 fi
 
 if test -z "$SKIP_LIBRARY_CHECKS"; then
@@ -5262,7 +5225,6 @@ AC_SUBST(AR_EXTRACT)
 AC_SUBST(AS)
 AC_SUBST(ASFLAGS)
 AC_SUBST(AS_DASH_C_FLAG)
-AC_SUBST(LD)
 AC_SUBST(RC)
 AC_SUBST(RCFLAGS)
 AC_SUBST(WINDRES)
@@ -5625,7 +5587,6 @@ AC_SUBST(HOST_LDFLAGS)
 AC_SUBST(HOST_OPTIMIZE_FLAGS)
 AC_SUBST(HOST_AR)
 AC_SUBST(HOST_AR_FLAGS)
-AC_SUBST(HOST_LD)
 AC_SUBST(HOST_RANLIB)
 AC_SUBST(HOST_BIN_SUFFIX)
 
@@ -5948,7 +5909,6 @@ export RANLIB
 export CPP
 export CC
 export CXX
-export LD
 export ARFLAGS
 export CPPFLAGS
 export CFLAGS

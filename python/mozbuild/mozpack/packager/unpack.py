@@ -67,7 +67,7 @@ class UnpackFinder(BaseFinder):
             # chrome.manifest, it is an omnijar. All the files it contains
             # go in the directory containing the omnijar. Manifests are merged
             # if there is a corresponding manifest in the directory.
-            if not p.endswith('.xpi') and self._maybe_zip(f) and \
+            if not p.endswith('.xpi') and self._maybe_zip(p, f) and \
                     (mozpath.basename(p) == self.omnijar or
                      not self.omnijar):
                 jar = self._open_jar(p, f)
@@ -89,7 +89,7 @@ class UnpackFinder(BaseFinder):
                 f = m
             # If the file is a packed addon, unpack it under a directory named
             # after the xpi.
-            if p.endswith('.xpi') and self._maybe_zip(f):
+            if p.endswith('.xpi') and self._maybe_zip(p, f):
                 self._fill_with_jar(p[:-4], self._open_jar(p, f))
                 continue
             if not p in jars:
@@ -157,7 +157,7 @@ class UnpackFinder(BaseFinder):
         for p in self.files.match(path):
             yield p, self.files[p]
 
-    def _maybe_zip(self, file):
+    def _maybe_zip(self, path, file):
         '''
         Return whether the given BaseFile looks like a ZIP/Jar.
         '''
