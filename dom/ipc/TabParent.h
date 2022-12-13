@@ -253,6 +253,8 @@ public:
 
   virtual bool RecvSetCandidateWindowForPlugin(
                  const widget::CandidateWindowPosition& aPosition) override;
+  virtual bool
+  RecvEnableIMEForPlugin(const bool& aEnable) override;
 
   virtual bool
   RecvDefaultProcOfPluginEvent(const WidgetPluginEvent& aEvent) override;

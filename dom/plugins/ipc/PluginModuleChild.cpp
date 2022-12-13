@@ -2085,7 +2085,9 @@ class GetKeyStateTask : public Runnable
 
 public:
     explicit GetKeyStateTask(int aVirtKey, HANDLE aSemaphore, SHORT* aKeyState) :
-        mVirtKey(aVirtKey), mSemaphore(aSemaphore), mKeyState(aKeyState)
+        mKeyState(aKeyState),
+        mVirtKey(aVirtKey),
+        mSemaphore(aSemaphore)
     {}
 
     NS_IMETHOD Run() override

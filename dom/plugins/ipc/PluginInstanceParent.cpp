@@ -2455,6 +2455,20 @@ PluginInstanceParent::RecvRequestCommitOrCancel(const bool& aCommitted)
     return true;
 }
 
+bool
+PluginInstanceParent::RecvEnableIME(const bool& aEnable)
+{
+#if defined(OS_WIN)
+    nsPluginInstanceOwner* owner = GetOwner();
+    if (owner) {
+        owner->EnableIME(aEnable);
+    }
+#else
+    MOZ_CRASH("Not reachable");
+#endif
+    return true;
+}
+
 nsresult
 PluginInstanceParent::HandledWindowedPluginKeyEvent(
                         const NativeEventData& aKeyEventData,

@@ -635,7 +635,6 @@ TabParent::Show(const ScreenIntSize& size, bool aParentIsActive)
         RefPtr<nsFrameLoader> frameLoader = GetFrameLoader();
         if (frameLoader) {
           renderFrame = new RenderFrameParent(frameLoader, &success);
-          MOZ_ASSERT(success);
           layersId = renderFrame->GetLayersId();
           renderFrame->GetTextureFactoryIdentifier(&textureFactoryIdentifier);
           AddTabParentToTable(layersId, this);
@@ -2170,7 +2169,7 @@ TabParent::RecvSetPluginFocused(const bool& aFocused)
   return true;
 }
 
- bool
+bool
 TabParent::RecvSetCandidateWindowForPlugin(
              const CandidateWindowPosition& aPosition)
 {
@@ -2180,6 +2179,17 @@ TabParent::RecvSetCandidateWindowForPlugin(
   }
 
   widget->SetCandidateWindowForPlugin(aPosition);
+  return true;
+}
+
+bool
+TabParent::RecvEnableIMEForPlugin(const bool& aEnable)
+{
+  nsCOMPtr<nsIWidget> widget = GetWidget();
+  if (!widget) {
+    return true;
+  }
+  widget->EnableIMEForPlugin(aEnable);
   return true;
 }
 
@@ -3086,7 +3096,7 @@ TabParent::AddInitialDnDDataTo(DataTransfer* aDataTransfer)
           variant->SetAsISupports(imageContainer);
         } else {
           Shmem data = item.data().get_Shmem();
-          variant->SetAsACString(nsDependentCString(data.get<char>(), data.Size<char>()));
+          variant->SetAsACString(nsDependentCSubstring(data.get<char>(), data.Size<char>()));
         }
 
         mozilla::Unused << DeallocShmem(item.data().get_Shmem());

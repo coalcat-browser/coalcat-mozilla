@@ -595,7 +595,7 @@ PluginModuleChromeParent::OnProcessLaunched(const bool aSucceeded)
     }
 #ifdef XP_WIN
     { // Scope for lock
-        mozilla::MutexAutoLock lock(mCrashReporterMutex);
+        ReentrantMonitorAutoEnter mon(mCrashReporterMutex);
         mCrashReporter = CrashReporter();
     }
 #endif
@@ -824,7 +824,7 @@ PluginModuleChromeParent::WriteExtraDataForMinidump(AnnotationTable& notes)
 {
 #ifdef XP_WIN
     // mCrashReporterMutex is already held by the caller
-    mCrashReporterMutex.AssertCurrentThreadOwns();
+    mCrashReporterMutex.AssertCurrentThreadIn();
 #endif
     typedef nsDependentCString CS;
 
@@ -1186,7 +1186,7 @@ PluginModuleChromeParent::TakeFullMinidump(base::ProcessId aContentPid,
 {
 #ifdef MOZ_CRASHREPORTER
 #ifdef XP_WIN
-    mozilla::MutexAutoLock lock(mCrashReporterMutex);
+    ReentrantMonitorAutoEnter mon(mCrashReporterMutex);
 #endif // XP_WIN
 
     CrashReporterParent* crashReporter = CrashReporter();
@@ -1283,7 +1283,7 @@ PluginModuleChromeParent::TerminateChildProcess(MessageLoop* aMsgLoop,
     }
 
 #ifdef XP_WIN
-    mozilla::MutexAutoLock lock(mCrashReporterMutex);
+    ReentrantMonitorAutoEnter mon(mCrashReporterMutex);
     CrashReporterParent* crashReporter = mCrashReporter;
     if (!crashReporter) {
         // If mCrashReporter is null then the hang has ended, the plugin module
@@ -1509,7 +1509,7 @@ void
 PluginModuleChromeParent::ProcessFirstMinidump()
 {
 #ifdef XP_WIN
-    mozilla::MutexAutoLock lock(mCrashReporterMutex);
+    ReentrantMonitorAutoEnter mon(mCrashReporterMutex);
 #endif
     CrashReporterParent* crashReporter = CrashReporter();
     if (!crashReporter)
@@ -2967,7 +2967,7 @@ PluginModuleChromeParent::DeallocPCrashReporterParent(PCrashReporterParent* acto
 {
 #ifdef MOZ_CRASHREPORTER
 #ifdef XP_WIN
-    mozilla::MutexAutoLock lock(mCrashReporterMutex);
+    ReentrantMonitorAutoEnter mon(mCrashReporterMutex);
     if (actor == static_cast<PCrashReporterParent*>(mCrashReporter)) {
         mCrashReporter = nullptr;
     }

@@ -16,6 +16,7 @@
 #include "mozilla/plugins/PluginMessageUtils.h"
 #include "mozilla/plugins/PluginTypes.h"
 #include "mozilla/ipc/TaskFactory.h"
+#include "mozilla/ReentrantMonitor.h"   // for ReentrantMonitorAutoEnter, etc
 #include "mozilla/TimeStamp.h"
 #include "npapi.h"
 #include "npfunctions.h"
@@ -508,6 +509,7 @@ class PluginModuleChromeParent
     AnswerGetKeyState(const int32_t& aVirtKey, int16_t* aRet) override;
 
 private:
+    typedef mozilla::ReentrantMonitor ReentrantMonitor;
     virtual void
     EnteredCxxStack() override;
 
@@ -599,9 +601,11 @@ private:
      * This mutex protects the crash reporter when the Plugin Hang UI event
      * handler is executing off main thread. It is intended to protect both
      * the mCrashReporter variable in addition to the CrashReporterParent object
-     * that mCrashReporter refers to.
+     * that mCrashReporter refers to. Sometimes asynchronous crash reporter
+     * callbacks are dispatched synchronously while the caller is still holding
+     * the mutex. This requires recursive locking support in the mutex.
      */
-    mozilla::Mutex mCrashReporterMutex;
+    ReentrantMonitor mCrashReporterMutex;
     CrashReporterParent* mCrashReporter;
 #endif // MOZ_CRASHREPORTER
 

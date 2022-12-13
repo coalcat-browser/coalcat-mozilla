@@ -35,8 +35,9 @@ full-update:: complete-patch
 
 ifeq ($(OS_TARGET), WINNT)
 MOZ_PKG_FORMAT	:= SFX7Z
-UNPACKAGE	= '$(subst $(DIST),$(ABS_DIST),$(INSTALLER_PACKAGE))'
-ifdef AB_CD
+ifndef AB_CD
+UNPACKAGE	= '$(ABS_DIST)/install/sea/$(PKG_INST_BASENAME).exe'
+else
 UNPACKAGE	= '$(PACKAGE_BASE_DIR)/$(PACKAGE)'
 endif
 endif

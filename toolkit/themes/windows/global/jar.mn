@@ -122,10 +122,10 @@ toolkit.jar:
 % override chrome://global/skin/tree/sort-asc.png                 chrome://global/skin/tree/sort-asc-XP.png                osversion<6
 % override chrome://global/skin/tree/sort-dsc.png                 chrome://global/skin/tree/sort-dsc-XP.png                osversion<6
 
-% override chrome://global/skin/icons/close.png                   chrome://global/skin/icons/close-XPVista7.png            osversion<=6.1
-% override chrome://global/skin/icons/close@2x.png                chrome://global/skin/icons/close-XPVista7@2x.png         osversion<=6.1
-% override chrome://global/skin/icons/close-inverted.png          chrome://global/skin/icons/close-inverted-XPVista7.png   osversion<=6.1
-% override chrome://global/skin/icons/close-inverted@2x.png       chrome://global/skin/icons/close-inverted-XPVista7@2x.png osversion<=6.1
+% override chrome://global/skin/icons/close.png                   chrome://global/skin/icons/close-XPVista7.png            osversion<=6.3
+% override chrome://global/skin/icons/close@2x.png                chrome://global/skin/icons/close-XPVista7@2x.png         osversion<=6.3
+% override chrome://global/skin/icons/close-inverted.png          chrome://global/skin/icons/close-inverted-XPVista7.png   osversion<=6.3
+% override chrome://global/skin/icons/close-inverted@2x.png       chrome://global/skin/icons/close-inverted-XPVista7@2x.png osversion<=6.3
 
 % override chrome://global/skin/tree/twisty.svg#clsd              chrome://global/skin/tree/twisty-Vista78.svg#clsd           osversion<=6.3
 % override chrome://global/skin/tree/twisty.svg#clsd-rtl          chrome://global/skin/tree/twisty-Vista78.svg#clsd-rtl       osversion<=6.3

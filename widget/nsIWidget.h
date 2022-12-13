@@ -1788,6 +1788,13 @@ public:
                    const mozilla::WidgetPluginEvent& aEvent) = 0;
 
     /*
+     * Enable or Disable IME by windowless plugin.
+     */
+    virtual void EnableIMEForPlugin(bool aEnable)
+    {
+    }
+
+    /*
      * Notifies the input context changes.
      */
     NS_IMETHOD_(void) SetInputContext(const InputContext& aContext,

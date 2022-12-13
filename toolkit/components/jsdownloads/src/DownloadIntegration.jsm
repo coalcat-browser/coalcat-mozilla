@@ -687,7 +687,7 @@ this.DownloadIntegration = {
     }
 
     let isWindowsExe = AppConstants.platform == "win" &&
-      fileExtension.toLowerCase() == "exe";
+      fileExtension && fileExtension.toLowerCase() == "exe";
 
     // Ask for confirmation if the file is executable, except on Windows where
     // the operating system will show the prompt based on the security zone.

@@ -332,11 +332,11 @@ def ft2_info(freetype2_combined_info, tree_freetype, build_env):
     if freetype2_combined_info:
         return freetype2_combined_info
 
-set_config('FT2_LIBS', delayed_getattr(ft2_info, 'libs'))
+set_config('FT2_LIBS', ft2_info.libs)
 add_old_configure_assignment('FT2_LIBS',
-                             delayed_getattr(ft2_info, 'libs'))
+                             ft2_info.libs)
 add_old_configure_assignment('FT2_CFLAGS',
-                             delayed_getattr(ft2_info, 'cflags'))
+                             ft2_info.cflags)
 
 # Apple platform decoder support
 # ==============================================================
@@ -508,6 +508,18 @@ project_flag('MOZ_SERVICES_CLOUDSYNC',
 project_flag('MOZ_ANDROID_HISTORY',
              help='Enable Android History instead of Places',
              set_as_define=True)
+
+option(env='MOZ_PHOTON_ANIMATIONS',
+       help='Enable Photon UI animations',
+       default=milestone.is_nightly)
+
+@depends('MOZ_PHOTON_ANIMATIONS')
+def photon_animations(value):
+    if value:
+        return bool(value)
+
+set_config('MOZ_PHOTON_ANIMATIONS', photon_animations)
+set_define('MOZ_PHOTON_ANIMATIONS', photon_animations)
 
 @depends('MOZ_PLACES', 'MOZ_ANDROID_HISTORY')
 def check_places_and_android_history(places, android_history):
@@ -793,8 +805,8 @@ set_define('USE_SKIA_GPU', skia_gpu)
 
 option('--enable-skia-pdf', help='Enable Skia PDF')
 
-@depends('--enable-skia-pdf', skia, target)
-def skia_pdf(value, skia, target):
+@depends('--enable-skia-pdf', skia)
+def skia_pdf(value, skia):
     if value.origin == 'default':
         if not skia:
             return None

@@ -352,7 +352,8 @@ popupnotificationcontent {
 
 @media (-moz-os-version: windows-xp),
        (-moz-os-version: windows-vista),
-       (-moz-os-version: windows-win7) {
+       (-moz-os-version: windows-win7),
+       (-moz-os-version: windows-win8) {
   .close-icon {
     -moz-image-region: rect(0, 16px, 16px, 0);
   }
@@ -388,7 +389,8 @@ popupnotificationcontent {
 
   @media (-moz-os-version: windows-xp),
          (-moz-os-version: windows-vista),
-         (-moz-os-version: windows-win7) {
+         (-moz-os-version: windows-win7),
+         (-moz-os-version: windows-win8) {
     .close-icon {
       -moz-image-region: rect(0, 32px, 32px, 0);
     }

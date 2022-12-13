@@ -3401,6 +3401,8 @@ nsWindow::ThemeChanged()
 
         children = children->next;
     }
+
+    IMContextWrapper::OnThemeChanged();
 }
 
 void

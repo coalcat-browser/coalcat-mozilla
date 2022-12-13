@@ -1,4 +1,9 @@
-[root]
+[[package]]
+name = "byteorder"
+version = "0.5.3"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+
+[[package]]
 name = "gkrust-gtest"
 version = "0.1.0"
 dependencies = [
@@ -6,11 +11,6 @@ dependencies = [
  "mp4parse-gtest 0.1.0",
  "nsstring-gtest 0.1.0",
 ]
-
-[[package]]
-name = "byteorder"
-version = "0.5.3"
-source = "registry+https://github.com/rust-lang/crates.io-index"
 
 [[package]]
 name = "gkrust-shared"

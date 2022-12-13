@@ -357,6 +357,7 @@ public:
         const mozilla::widget::CandidateWindowPosition& aPosition) override;
     virtual bool
     RecvRequestCommitOrCancel(const bool& aCommitted) override;
+    virtual bool RecvEnableIME(const bool& aEnable) override;
 
     // for reserved shortcut key handling with windowed plugin on Windows
     nsresult HandledWindowedPluginKeyEvent(

@@ -84,6 +84,44 @@ IsWindowsBuildOrLater(uint32_t aBuild)
   return false;
 }
 
+inline bool
+IsWindows10BuildOrLater(uint32_t aBuild)
+{
+  static uint32_t minBuild = 0;
+  static uint32_t maxBuild = UINT32_MAX;
+
+  if (minBuild >= aBuild) {
+    return true;
+  }
+
+  if (aBuild >= maxBuild) {
+    return false;
+  }
+
+  OSVERSIONINFOEX info;
+  ZeroMemory(&info, sizeof(OSVERSIONINFOEX));
+  info.dwOSVersionInfoSize = sizeof(OSVERSIONINFOEX);
+  info.dwMajorVersion = 10;
+  info.dwBuildNumber = aBuild;
+
+  DWORDLONG conditionMask = 0;
+  VER_SET_CONDITION(conditionMask, VER_MAJORVERSION, VER_GREATER_EQUAL);
+  VER_SET_CONDITION(conditionMask, VER_MINORVERSION, VER_GREATER_EQUAL);
+  VER_SET_CONDITION(conditionMask, VER_BUILDNUMBER, VER_GREATER_EQUAL);
+  VER_SET_CONDITION(conditionMask, VER_SERVICEPACKMAJOR, VER_GREATER_EQUAL);
+  VER_SET_CONDITION(conditionMask, VER_SERVICEPACKMINOR, VER_GREATER_EQUAL);
+
+  if (VerifyVersionInfo(&info, VER_MAJORVERSION | VER_MINORVERSION |
+                        VER_BUILDNUMBER | VER_SERVICEPACKMAJOR |
+                        VER_SERVICEPACKMINOR, conditionMask)) {
+    minBuild = aBuild;
+    return true;
+  }
+
+  maxBuild = aBuild;
+  return false;
+}
+
 #if defined(_M_X64) || defined(_M_AMD64)
 // We support only Win7 or later on Win64.
 MOZ_ALWAYS_INLINE bool
@@ -181,6 +219,46 @@ MOZ_ALWAYS_INLINE bool
 IsWin10OrLater()
 {
   return IsWindowsVersionOrLater(0x0a000000ul);
+}
+
+MOZ_ALWAYS_INLINE bool
+IsWin10November2015UpdateOrLater() {
+  return IsWindows10BuildOrLater(10586);
+}
+
+MOZ_ALWAYS_INLINE bool
+IsWin10AnniversaryUpdateOrLater() {
+  return IsWindows10BuildOrLater(14393);
+}
+
+MOZ_ALWAYS_INLINE bool
+IsWin10CreatorsUpdateOrLater() {
+  return IsWindows10BuildOrLater(15063);
+}
+
+MOZ_ALWAYS_INLINE bool
+IsWin10FallCreatorsUpdateOrLater() {
+  return IsWindows10BuildOrLater(16299);
+}
+
+MOZ_ALWAYS_INLINE bool
+IsWin10April2018UpdateOrLater() {
+  return IsWindows10BuildOrLater(17134);
+}
+
+MOZ_ALWAYS_INLINE bool
+IsWin10Sep2018UpdateOrLater() {
+  return IsWindows10BuildOrLater(17763);
+}
+
+MOZ_ALWAYS_INLINE bool
+IsWin10May2019UpdateOrLater() {
+  return IsWindows10BuildOrLater(18362);
+}
+
+MOZ_ALWAYS_INLINE bool
+IsWin11OrLater() {
+  return IsWindows10BuildOrLater(21996); // grkb change -12/12/2022
 }
 
 MOZ_ALWAYS_INLINE bool

@@ -18,10 +18,12 @@ namespace mozilla {
 namespace widget {
 
 using namespace mozilla::gfx;
+using namespace mozilla;
 
 WinCompositorWidget::WinCompositorWidget(const CompositorWidgetInitData& aInitData)
  : mWidgetKey(aInitData.widgetKey()),
    mWnd(reinterpret_cast<HWND>(aInitData.hWnd())),
+   mTransparentSurfaceLock("mTransparentSurfaceLock"),
    mTransparencyMode(static_cast<nsTransparencyMode>(aInitData.transparencyMode())),
    mMemoryDC(nullptr),
    mCompositeDC(nullptr),
@@ -39,6 +41,7 @@ WinCompositorWidget::WinCompositorWidget(const CompositorWidgetInitData& aInitDa
 void
 WinCompositorWidget::OnDestroyWindow()
 {
+  MutexAutoLock lock(mTransparentSurfaceLock);
   mTransparentSurface = nullptr;
   mMemoryDC = nullptr;
 }
@@ -75,6 +78,8 @@ WinCompositorWidget::GetClientSize()
 already_AddRefed<gfx::DrawTarget>
 WinCompositorWidget::StartRemoteDrawing()
 {
+  MutexAutoLock lock(mTransparentSurfaceLock);
+
   MOZ_ASSERT(!mCompositeDC);
 
   RefPtr<gfxASurface> surf;
@@ -229,6 +234,7 @@ WinCompositorWidget::LeavePresentLock()
 RefPtr<gfxASurface>
 WinCompositorWidget::EnsureTransparentSurface()
 {
+  mTransparentSurfaceLock.AssertCurrentThreadOwns();
   MOZ_ASSERT(mTransparencyMode == eTransparencyTransparent);
 
   IntSize size = GetClientSize().ToUnknownSize();
@@ -245,6 +251,7 @@ WinCompositorWidget::EnsureTransparentSurface()
 void
 WinCompositorWidget::CreateTransparentSurface(const gfx::IntSize& aSize)
 {
+  mTransparentSurfaceLock.AssertCurrentThreadOwns();
   MOZ_ASSERT(!mTransparentSurface && !mMemoryDC);
   RefPtr<gfxWindowsSurface> surface = new gfxWindowsSurface(aSize, SurfaceFormat::A8R8G8B8_UINT32);
   mTransparentSurface = surface;
@@ -254,6 +261,7 @@ WinCompositorWidget::CreateTransparentSurface(const gfx::IntSize& aSize)
 void
 WinCompositorWidget::UpdateTransparency(nsTransparencyMode aMode)
 {
+  MutexAutoLock lock(mTransparentSurfaceLock);
   if (mTransparencyMode == aMode) {
     return;
   }
@@ -270,6 +278,7 @@ WinCompositorWidget::UpdateTransparency(nsTransparencyMode aMode)
 void
 WinCompositorWidget::ClearTransparentWindow()
 {
+  MutexAutoLock lock(mTransparentSurfaceLock);
   if (!mTransparentSurface) {
     return;
   }

@@ -1,14 +1,14 @@
-[root]
+[[package]]
+name = "byteorder"
+version = "0.5.3"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+
+[[package]]
 name = "gkrust"
 version = "0.1.0"
 dependencies = [
  "gkrust-shared 0.1.0",
 ]
-
-[[package]]
-name = "byteorder"
-version = "0.5.3"
-source = "registry+https://github.com/rust-lang/crates.io-index"
 
 [[package]]
 name = "gkrust-shared"
